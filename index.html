@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="de" style="--sidebar-width: 400px;"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline HTML-Seite</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+        }
+        .sidebar {
+            width: var(--sidebar-width, 200px);
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto; /* Beginn new CODE: Scrollen ermöglichen */
+        }
+        /* Beginn new CODE: Sicherstellen, dass die Navigationsleiste scrollbar ist */
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            max-height: 100vh; /* Begrenzung der Höhe der Navigationsleiste */
+            overflow-y: auto;  /* Scrollbar, wenn die Liste zu lang wird */
+        }
+        /* END new CODE */
+        .sidebar h2 {
+            color: white;
+            margin-bottom: 20px;
+            text-align: center; /* Beginn new CODE: Überschriften in Sidebar zentrieren */
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 5px 0;
+        }
+        /* Beginn new CODE: Überschriften zentrieren */
+        h1, h2 {
+            text-align: center; /* Überschriften zentriert */
+        }
+        /* Beginn new CODE: Blocksatz für Text */
+        p {
+            text-align: justify; /* Text im Blocksatz */
+        }
+        /* Ende new CODE  */
+        .container {
+            flex: 1;
+            margin-left: calc(var(--sidebar-width, 200px) + 20px); /* Dynamisch abhängig von der Sidebar-Breite + zusätzlicher Abstand */
+            padding: 20px;
+            max-width: 800px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .video-container, .file-container {
+            margin: 0 auto 20px; /* Zentriert die Box horizontal und behält margin-bottom bei */
+            border: 1px solid #ddd;
+            padding: 10px;
+            width: 100%;
+            max-width: 90%; /* Box soll maximal 90% der verfügbaren Breite einnehmen */
+            /** HIER ÄNDERN AUF 90% UM WIEDER NE BOX ZU HABEN!!!!! */
+        }
+        .edit-controls {
+            margin-top: 10px;
+        }
+        .edit-controls input, .edit-controls button {
+            margin-right: 5px;
+        }
+        .logo-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            margin: 0 10px; /* Abstand zwischen den Bildern */
+            height: auto; /* Optionale Einstellung, um das Seitenverhältnis zu bewahren */
+        }
+        .logo1 {
+            width: 100px; /* Größe des ersten Logos */
+        }
+        .logo2 {
+            width: 170px; /* Größe des zweiten Logos */
+        }
+        /* Normaler Stil für Navigationspunkte */
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 5px 0;
+        }
+
+        /* Spezielle Stile für die Überschriften Video-Bereich und Datei-Bereich */
+        #navList a.section-heading {
+            font-size: 18px;
+            font-weight: bold;
+            color: #FFD700; /* Goldene Farbe als Beispiel, du kannst es anpassen */
+            margin-bottom: 10px;
+            border-bottom: 1px solid #FFD700;
+            padding-bottom: 5px;
+        }
+
+        /* Beginn new CODE: Button-Styling für alle Buttons */
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-left: 20px; /* Abstand von der Sidebar */
+        }
+        /* Ende new CODE */
+        /* CODE Start: Anpassung für die Admin-Logo-Bearbeitungsbox */
+        .admin-logo-section {
+            margin: 0 auto 20px;  /* Gleiche Margins wie die anderen Boxen */
+            padding: 10px;
+            border: 1px solid #ddd; /* Gleiche Umrandung wie andere Boxen */
+            max-width: 90%; /* Maximale Breite wie bei den anderen Boxen */
+            background-color: white; /* Hintergrundfarbe anpassen */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box-Schatten für Konsistenz */
+        }
+        /* CODE Ende */
+
+        .admin-logo-section h2 {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .invisible-space {
+            height: 50px; /* Höhe des unsichtbaren Platzes */
+            visibility: hidden; /* Unsichtbar machen */
+        }
+        /* Ende Code für Admin-spezifische Logo-Bearbeitungsbox */
+        .hidden {
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <!-- Beginn new CODE: Externe Bilder nebeneinander -->
+        <div class="logo-container">
+            <img src="https://drive.google.com/thumbnail?id=1dqIFW8RnxmQxOWCm2YbEr37wkrNOoWzR" alt="DP-DYNAMIC - Logo transparent.png" class="logo logo1" style="width: 100px;">
+            <img src="https://drive.google.com/thumbnail?id=1dpvEaqzi4TYQrb74pcNV6RhAPiv-ICp_" alt="Skyfend Europe Logo v2.png" class="logo logo2" style="width: 170px;">
+        </div>
+        <!-- END new CODE -->
+        <!-- Bearbeitbare Inhaltsübersicht -->
+        <h2 id="navTitle" contenteditable="false">Inhaltsübersicht 2</h2>
+        <ul id="navList"><li><a href="#videoSection" class="section-heading">Videoanleitungen - SkyFend C2 App</a></li><li><a href="#video-0">C2 App offline update</a></li><li><a href="#video-1">C2 App online update</a></li><li><a href="#video-2">C2 Darstellung &amp; Ausrichtung</a></li><li><a href="#video-3">C2 Detektionsübersicht</a></li><li><a href="#video-4">C2 download offline Kartenmaterial</a></li><li><a href="#video-5">C2 Gerätemenü</a></li><li><a href="#video-6">C2 QR-Code &amp; what3words</a></li><li><a href="#video-7">C2 Schutz Ihrer Daten</a></li><li><a href="#video-8">C2 Wiedergabe + Video Erstellung zur Doku</a></li><li><a href="#video-9">C2 Zeitstempel</a></li><li><a href="#fileSection" class="section-heading">Datenblätter I Anleitungen I Aktualisierungen&nbsp;</a></li><li><a href="#file-0">Datei Titel w23ere</a></li><li><a href="#file-1">Datei Titel we</a></li><li class="invisible-space"></li></ul>
+    </div>
+
+    <div class="container">
+        <h1 id="mainTitle" contenteditable="false">DP-Dynamic Schulungsübersicht</h1>
+        
+        <div id="videoSection">
+            <h2 id="videoTitle" contenteditable="false">Videoanleitungen - SkyFend C2 App</h2>
+            <div id="videoList"><div class="video-container" data-filename="">
+                    <h3 contenteditable="false" id="video-0">C2 App offline update</h3>
+                    <p contenteditable="false">C2 App offline update</p>
+                    <iframe width="560" height="315" src="https://drive.google.com/file/d/1rn3owqGcbFItyaUem5m_g-7BdS41mBCp/preview" frameborder="0" allowfullscreen=""></iframe>
+                    
+                </div><div class="video-container" data-filename="">
+                    <h3 contenteditable="false" id="video-1">C2 App online update</h3>
+                    <p contenteditable="false">C2 App online update</p>
+                    <iframe width="560" height="315" src="https://drive.google.com/file/d/1rnpVh56ezzYTq77dqQcyRmDiPlB2ehQ9/preview" frameborder="0" allowfullscreen=""></iframe>
+                    
+                </div><div class="video-container" data-filename="">
+                    <h3 contenteditable="false" id="video-2">C2 Darstellung &amp; Ausrichtung</h3>
+                    <p contenteditable="false">C2 Darstellung &amp; Ausrichtung</p>
+                    <iframe width="560" height="315" src="https://drive.google.com/file/d/1rolWhoUs-95MVvrlmTWVfPw4eCf2WLyx/preview" frameborder="0" allowfullscreen=""></iframe>
+                    
+                </div><div class="video-container" data-filename="">
+                    <h3 contenteditable="false" id="video-3">C2 Detektionsübersicht</h3>
+                    <p contenteditable="false">C2 Detektionsübersicht</p>
+                    <iframe width="560" height="315" src="https://drive.google.com/file/d/1rp5OXpZkjtbIYqKSVDhr97Ckm0WkjSid/preview" frameborder="0" allowfullscreen=""></iframe>
+                    
+                </div><div class="video-container" data-filename="">
+                    <h3 contenteditable="false" id="video-4">C2 download offline Kartenmaterial</h3>
+                    <p contenteditable="false">C2 download offline Kartenmaterial</p>
+                    <iframe width="560" height="315" src="https://drive.google.com/file/d/1rsEOSFgLhRk0GIxpYouInrjJ4oS95tpY/preview" frameborder="0" allowfullscreen=""></iframe>
+                    
+                </div><div class="video-container" data-filename="">
+                    <h3 contenteditable="false" id="video-5">C2 Gerätemenü</h3>
+                    <p contenteditable="false">C2 Gerätemenü</p>
+                    <iframe width="560" height="315" src="https://drive.google.com/file/d/1rsoDHIZERZtacWv3566ODNFGU5ed5f_6/preview" frameborder="0" allowfullscreen=""></iframe>
+                    
+                </div><div class="video-container" data-filename="">
+                    <h3 contenteditable="false" id="video-6">C2 QR-Code &amp; what3words</h3>
+                    <p contenteditable="false">C2 QR-Code &amp; what3words</p>
+                    <iframe width="560" height="315" src="https://drive.google.com/file/d/1sAvzDu-3NxRTxz8tFX3ExtgFMhtFdWYS/preview" frameborder="0" allowfullscreen=""></iframe>
+                    
+                </div><div class="video-container" data-filename="">
+                    <h3 contenteditable="false" id="video-7">C2 Schutz Ihrer Daten</h3>
+                    <p contenteditable="false">C2 Schutz Ihrer Daten</p>
+                    <iframe width="560" height="315" src="https://drive.google.com/file/d/1sAxsZ-gU89hi24Z-onRoK9qsd1IeQdX9/preview" frameborder="0" allowfullscreen=""></iframe>
+                    
+                </div><div class="video-container" data-filename="">
+                    <h3 contenteditable="false" id="video-8">C2 Wiedergabe + Video Erstellung zur Doku</h3>
+                    <p contenteditable="false">C2 Wiedergabe + Video Erstellung zur Doku</p>
+                    <iframe width="560" height="315" src="https://drive.google.com/file/d/1sFZ63hiPoBpGi6FdmXTCP3XH46kKu_56/preview" frameborder="0" allowfullscreen=""></iframe>
+                    
+                </div><div class="video-container" data-filename="">
+                    <h3 contenteditable="false" id="video-9">C2 Zeitstempel</h3>
+                    <p contenteditable="false">C2 Zeitstempel</p>
+                    <iframe width="560" height="315" src="https://drive.google.com/file/d/1sR6FckfK_3qtt5abyBLIQcCPXgTTMAmQ/preview" frameborder="0" allowfullscreen=""></iframe>
+                    
+                </div></div>
+            
+        </div>
+        
+        <div id="fileSection">
+            <h2 id="fileTitle" contenteditable="false">Datenblätter I Anleitungen I Aktualisierungen&nbsp;</h2>
+            <div id="fileList"><div class="file-container">
+                    
+                    <h3 contenteditable="false" id="file-0">Datei Titel w23ere</h3>
+                    <p contenteditable="false">Beschreibung der Datei we</p>
+                    
+                        <a href="https://drive.google.com/uc?export=download&amp;id=101lTRJ5j8cGGNitR1254-LbV9kRkk-XY" download="" id="fileLink1-1">Download 2</a>
+                        
+                    
+                    <div style="text-align: right; margin-top: 10px;">
+                        
+                    </div>
+                </div><div class="file-container">
+                    
+                    <h3 contenteditable="false" id="file-1">Datei Titel we</h3>
+                    <p contenteditable="false">Beschreibung der Dateiwerfdg</p>
+                    
+                        <a href="file:///Users/mama/Downloads/Schulungsplattform%20V1-.html#" download="" id="fileLink2-1">  e dwr</a>
+                        
+                    
+                        <a href="file:///Users/mama/Downloads/Schulungsplattform%20V1-.html#" download="" id="fileLink2-2">wergfv</a>
+                        
+                    
+                        <a href="file:///Users/mama/Downloads/Schulungsplattform%20V1-.html#" download="" id="fileLink2-3">werfg</a>
+                        
+                    
+                    <div style="text-align: right; margin-top: 10px;">
+                        
+                    </div>
+                </div></div>
+            
+        </div>
+   
+        <!-- Beginn CODE für Admin-Logo-Bearbeitungsbox -->
+        
+        <!-- Ende CODE für Admin-Logo-Bearbeitungsbox -->
+
+<!---->
+    <!--hier sind neue Elemente-->
+        
+        
+        <input type="file" id="fileInput" accept=".json" style="display:none" onchange="handleFile(event)">
+<!---->
+        
+
+        <!-- Beginn new CODE: Button zum Export der Kundenseite -->
+        
+        <!-- END new CODE -->
+        
+
+    </div>
+
+
+
+    <script>
+        let isLocked = false;
+        const PIN = "DP44332211SkyFend";
+/////
+    // hier sind noch neue funktionen hinzugefügt.
+
+    // Daten in eine Datei exportieren
+    function exportData() {
+        const data = {
+            mainTitle: document.getElementById('mainTitle').textContent,
+            videoTitle: document.getElementById('videoTitle').textContent,
+            fileTitle: document.getElementById('fileTitle').textContent,
+            navTitle: document.getElementById('navTitle').textContent, // Speichere die Inhaltsüberschrift
+            sidebarWidth: getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width'),
+            logo1Link: document.getElementById('logo1Link').value, // Hinzugefügt
+            logo2Link: document.getElementById('logo2Link').value, // Hinzugefügt
+            logo1Width: document.getElementById('logo1Width').value, // Hinzugefügt
+            logo2Width: document.getElementById('logo2Width').value, // Hinzugefügt
+            videos: Array.from(document.querySelectorAll('#videoList .video-container')).map(container => ({
+                title: container.querySelector('h3').textContent,
+                description: container.querySelector('p').textContent,
+                link: container.querySelector('iframe').src,
+                filename: container.dataset.filename // Neuer Dateiname
+            })),
+            files: Array.from(document.querySelectorAll('#fileList .file-container')).map((container, fileIndex) => ({
+                title: container.querySelector('h3').textContent,
+                description: container.querySelector('p').textContent,
+                links: Array.from(container.querySelectorAll('a')).map((link, linkIndex) => ({
+                    link: link.href,
+                    name: link.textContent,
+                    id: `fileLink${fileIndex + 1}-${linkIndex + 1}` // Store the ID in JSON for restoration
+                }))
+            }))
+
+        };
+
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'seite_daten.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+    // Beginn new CODE
+
+    // Funktion zum Aktualisieren der Logo-Links
+    function updateLogoLink(logoNumber) {
+        const linkInput = document.getElementById(`logo${logoNumber}Link`).value;
+        const fileId = extractFileId(linkInput);
+        const thumbnailLink = `https://drive.google.com/thumbnail?id=${fileId}`;
+
+        if (logoNumber === 1) {
+            document.querySelector('.logo1').src = thumbnailLink;
+        } else if (logoNumber === 2) {
+            document.querySelector('.logo2').src = thumbnailLink;
+        }
+    }
+
+    // Export der Kundenseite
+    function exportCustomerPage() {
+        const clone = document.documentElement.cloneNode(true);
+
+        // Entferne Bearbeitungskontrollen und den Kundenseite-Export-Button
+        const editControls = clone.querySelectorAll('.edit-controls, .edit-control, #exportButton, #importButton, #lockButton, #exportCustomerButton, #adjustSidebarButton, #adminLogoSection');
+        editControls.forEach(el => el.remove());
+
+        // Stelle sicher, dass Inhalte, die vorher bearbeitbar waren, nicht mehr bearbeitbar sind, aber sichtbar bleiben
+        const editableElements = clone.querySelectorAll('[contenteditable]');
+        editableElements.forEach(el => {
+            el.setAttribute('contenteditable', 'false');
+        });
+
+        // Entferne die Buttons "Datei entfernen" und "Neuen Link hinzufügen"
+        const removeButtons = clone.querySelectorAll('button[onclick^="removeFile"], button[onclick^="addAnotherLink"]');
+        removeButtons.forEach(button => button.remove());
+
+        // Update Navigation und alle Inhalte
+        const htmlContent = `<!DOCTYPE html>\n${clone.outerHTML}`;
+        const blob = new Blob([htmlContent], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'kundenseite.html';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+    // END new CODE
+
+    // Daten importieren
+    function importData() {
+        document.getElementById('fileInput').click();
+    }
+
+    // Datei importieren und Daten wiederherstellen
+    function handleFile(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+            const data = JSON.parse(event.target.result);
+
+            document.getElementById('mainTitle').textContent = data.mainTitle || '';
+            document.getElementById('videoTitle').textContent = data.videoTitle || '';
+            document.getElementById('fileTitle').textContent = data.fileTitle || '';
+            document.getElementById('navTitle').textContent = data.navTitle || ''; // Inhaltsüberschrift wiederherstellen
+            
+            if (data.sidebarWidth) {
+                document.documentElement.style.setProperty('--sidebar-width', data.sidebarWidth);
+            }
+
+            if (data.logo1Link) {
+                document.getElementById('logo1Link').value = data.logo1Link;
+                updateLogoLink(1);
+            }
+
+            if (data.logo2Link) {
+                document.getElementById('logo2Link').value = data.logo2Link;
+                updateLogoLink(2);
+            }
+
+            if (data.logo1Width) {
+                document.getElementById('logo1Width').value = data.logo1Width;
+                updateLogoSize(1);
+            }
+            if (data.logo2Width) {
+                document.getElementById('logo2Width').value = data.logo2Width;
+                updateLogoSize(2);
+            }
+
+            // Videos wiederherstellen
+            const videoList = document.getElementById('videoList');
+            videoList.innerHTML = '';
+            data.videos.forEach(video => {
+                const videoContainer = document.createElement('div');
+                videoContainer.className = 'video-container';
+                videoContainer.dataset.filename = video.filename || ''; // Dateiname wiederherstellen
+                videoContainer.innerHTML = `
+                    <h3 contenteditable="true">${video.title}</h3>
+                    <p contenteditable="true">${video.description}</p>
+                    <iframe width="560" height="315" src="${video.link}" frameborder="0" allowfullscreen></iframe>
+                    <div class="edit-controls">
+                        <input type="text" placeholder="Google Drive Video-Link" value="${video.link}">
+                        <button onclick="updateVideoLink(this)">Link aktualisieren</button>
+                        <button onclick="removeVideo(this)">Video entfernen</button>
+                    </div>
+                `;
+                videoList.appendChild(videoContainer);
+            });
+
+
+            // Dateien wiederherstellen
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = ''; // Clear existing files
+
+            data.files.forEach((file, fileIndex) => {
+                const fileContainer = document.createElement('div');
+                fileContainer.className = 'file-container';
+
+                // Loop through each link associated with the file and restore proper IDs
+                let linksHTML = '';
+                file.links.forEach((link, linkIndex) => {
+                    linksHTML += `
+                        <a href="${link.link}" download id="fileLink${fileIndex + 1}-${linkIndex + 1}">${link.name}</a>
+                        <div class="edit-controls">
+                            <input type="text" placeholder="Google Drive Datei-Link" id="fileInput${fileIndex + 1}-${linkIndex + 1}" value="${link.link}">
+                            <button onclick="updateFileLink(${fileIndex + 1}-${linkIndex + 1})">Link aktualisieren</button>
+                            <input type="text" placeholder="Link Name" id="fileName${fileIndex + 1}-${linkIndex + 1}" value="${link.name}">
+                            <button onclick="updateFileName(${fileIndex + 1}-${linkIndex + 1})">Name aktualisieren</button>
+                            <button onclick="deleteLink(${fileIndex + 1}-${linkIndex + 1}, this)">Link löschen</button>
+                        </div>
+                    `;
+                });
+
+                // Add the file container with its links
+                fileContainer.innerHTML = `
+                    <button onclick="addAnotherLink(${fileIndex + 1})">Neuen Link hinzufügen</button>
+                    <h3 contenteditable="true">${file.title}</h3>
+                    <p contenteditable="true">${file.description}</p>
+                    ${linksHTML}
+                    <div style="text-align: right; margin-top: 10px;">
+                        <button onclick="removeFile(this)">Datei entfernen</button>
+                    </div>
+                `;
+                fileList.appendChild(fileContainer);
+            });
+
+            // Ensure the "Add New Link" button is placed after all the links are imported
+            document.getElementById("fileSection").appendChild(document.querySelector('.button[onclick="addFile()"]'));
+        };
+
+        reader.readAsText(file);
+    }
+
+    function updateLogoSize(logoNumber) {
+        const sizeInput = document.getElementById(`logo${logoNumber}Width`).value + 'px';
+        
+        if (logoNumber === 1) {
+            document.querySelector('.logo1').style.width = sizeInput;
+        } else if (logoNumber === 2) {
+            document.querySelector('.logo2').style.width = sizeInput;
+        }
+    }
+
+
+    // Seitenbreite anpassen im Bearbeitungsmodus
+    function adjustSidebarWidth() {
+        // Aktuelle Sidebar-Breite auslesen
+        const currentWidth = getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width').trim() || "200px";
+        
+        // Eingabefeld mit der aktuellen Sidebar-Breite als Standardwert anzeigen
+        const width = prompt("Geben Sie die neue Breite der Sidebar in px ein:", currentWidth.replace('px', ''));
+        
+        if (width) {
+            document.documentElement.style.setProperty('--sidebar-width', width + "px");
+            localStorage.setItem('sidebarWidth', width + "px");  // Speichern der Sidebar-Breite in localStorage
+        }
+    }
+
+
+    // Breitenanpassung Sidebar auf Kundenseite beibehalten
+    function applySidebarWidth() {
+        const savedWidth = localStorage.getItem('sidebarWidth');
+        if (savedWidth) {
+            document.documentElement.style.setProperty('--sidebar-width', savedWidth);
+        }
+    }
+
+    // Seiteninitialisierung
+    applySidebarWidth();
+
+/////
+        function addVideo() {
+            const videoList = document.getElementById('videoList');
+            const videoContainer = document.createElement('div');
+            videoContainer.className = 'video-container';
+            videoContainer.innerHTML = `
+                <h3 contenteditable="true">Video Titel</h3>
+                <p contenteditable="true">Beschreibung des Videos</p>
+                <iframe width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
+                <div class="edit-controls">
+                    <input type="text" placeholder="Google Drive Video-Link">
+                    <input type="text" placeholder="Dateiname" value="">
+                    <button onclick="updateVideoLink(this)">Link aktualisieren</button>
+                    <button onclick="removeVideo(this)">Video entfernen</button>
+                </div>
+            `;
+            videoList.appendChild(videoContainer);
+            updateNavigation();
+        }
+
+        function updateVideoLink(button) {
+            const container = button.closest('.video-container');
+            const input = container.querySelector('input');
+            const iframe = container.querySelector('iframe');
+            const fileId = extractFileId(input.value);
+            if (fileId) {
+                iframe.src = `https://drive.google.com/file/d/${fileId}/preview`;
+            } else {
+                alert('Ungültiger Google Drive Link');
+            }
+            updateNavigation();
+        }
+
+        function removeVideo(button) {
+            const container = button.closest('.video-container');
+            container.remove();
+            updateNavigation();
+        }
+
+        function addFile() {
+            const fileList = document.getElementById('fileList');
+            const fileContainer = document.createElement('div');
+            fileContainer.className = 'file-container';
+            const fileIndex = fileList.childElementCount + 1;
+            
+            fileContainer.innerHTML = `
+                <h3 contenteditable="true">Datei Titel</h3>
+                <p contenteditable="true">Beschreibung der Datei</p>
+                <a href="#" download id="fileLink${fileIndex}">Download</a>
+                <div class="edit-controls">
+                    <input type="text" placeholder="Google Drive Datei-Link" id="fileInput${fileIndex}">
+                    <button onclick="updateFileLink(${fileIndex})">Link aktualisieren</button>
+                    <input type="text" placeholder="Link Name" id="fileName${fileIndex}">
+                    <button onclick="updateFileName(${fileIndex})">Name aktualisieren</button>
+                    <button onclick="deleteLink(${fileIndex}, this)">Link löschen</button>
+                </div>
+                <div style="text-align: right; margin-top: 10px;">  <!-- Style ensures "Datei entfernen" is alone -->
+                    <button onclick="addAnotherLink(${fileIndex})">Neuen Link hinzufügen</button>
+                    <button onclick="removeFile(this)" style="display: block; margin-left: auto;">Datei entfernen</button>
+                </div>
+            `;
+            
+            fileList.appendChild(fileContainer);
+            updateNavigation();
+        }
+
+
+        function updateFileName(index) {
+            const input = document.getElementById(`fileName${index}`).value;
+            if (input) {
+                document.getElementById(`fileLink${index}`).textContent = input;
+            }
+        }
+
+
+        function addAnotherLink(index) {
+            const fileContainer = document.querySelector(`#fileLink${index}`).closest('.file-container');
+            const newLinkIndex = document.querySelectorAll('.file-container a').length + 1;
+
+            const newLinkHTML = `
+                <a href="#" download id="fileLink${newLinkIndex}">Neuer Download</a>
+                <div class="edit-controls">
+                    <input type="text" placeholder="Google Drive Datei-Link" id="fileInput${newLinkIndex}">
+                    <button onclick="updateFileLink(${newLinkIndex})">Link aktualisieren</button>
+                    <input type="text" placeholder="Link Name" id="fileName${newLinkIndex}">
+                    <button onclick="updateFileName(${newLinkIndex})">Name aktualisieren</button>
+                    <button onclick="deleteLink(${newLinkIndex}, this)">Link löschen</button>
+                </div>
+            `;
+            fileContainer.insertAdjacentHTML('beforeend', newLinkHTML);
+        }
+
+        function deleteLink(index, button) {
+            const linkContainer = button.closest('.edit-controls');
+            const linkElement = document.getElementById(`fileLink${index}`);
+            linkElement.remove(); // Removes the link
+            linkContainer.remove(); // Removes the edit controls
+            updateNavigation(); // Make sure navigation updates after link removal
+        }
+
+
+
+        
+
+
+
+        function updateFileLink(index) {
+            const input = document.getElementById(`fileInput${index}`).value;
+            const linkElement = document.getElementById(`fileLink${index}`);
+            const fileId = extractFileId(input); // Extrahiere die Datei-ID vom Google Drive Link
+            if (fileId) {
+                linkElement.href = `https://drive.google.com/uc?export=download&id=${fileId}`; // Aktualisiere den href-Attribut mit der Datei-ID
+            } else {
+                alert('Ungültiger Google Drive Link'); // Zeige eine Fehlermeldung, wenn der Link ungültig ist
+            }
+            updateNavigation(); // Rufe die Navigationserneuerung auf, um die Änderungen anzuzeigen
+        }
+
+
+        function removeFile(button) {
+            const container = button.closest('.file-container');
+            container.remove();
+            updateNavigation();
+        }
+
+        // Funktion zum Extrahieren der Datei-ID aus einem Google Drive Link
+        function extractFileId(url) {
+            const match = url.match(/\/d\/(.+?)\/|id=(.+?)(&|$)/);
+            return match ? match[1] || match[2] : null;
+        }
+
+        function toggleLock() {
+            if (isLocked) {
+                const enteredPin = prompt("Bitte geben Sie den PIN ein, um die Seite zu entsperren:");
+                if (enteredPin === PIN) {
+                    isLocked = false;
+                    updateLockState();
+                } else {
+                    alert("Falscher PIN!");
+                }
+            } else {
+                isLocked = true;
+                updateLockState();
+            }
+        }
+
+        function updateLockState() {
+            const editControls = document.querySelectorAll('.edit-controls, .edit-control');
+            const editableElements = document.querySelectorAll('[contenteditable]');
+            
+            editControls.forEach(el => el.classList.toggle('hidden', isLocked));
+            editableElements.forEach(el => el.contentEditable = isLocked ? 'false' : 'true');
+            
+            document.getElementById('lockButton').textContent = isLocked ? 'Seite entsperren' : 'Seite sperren';
+        }
+
+
+
+/// ersetzt. das ist vorher.
+/*
+        function updateNavigation() {
+            const navList = document.getElementById('navList');
+            navList.innerHTML = '';
+            
+            const addNavItem = (title, id) => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = `#${id}`;
+                a.textContent = title;
+                li.appendChild(a);
+                navList.appendChild(li);
+            };
+
+            addNavItem(document.getElementById('videoTitle').textContent, 'videoSection');
+            document.querySelectorAll('#videoList .video-container h3').forEach((h3, index) => {
+                addNavItem(h3.textContent, `video-${index}`);
+                h3.id = `video-${index}`;
+            });
+
+            addNavItem(document.getElementById('fileTitle').textContent, 'fileSection');
+            document.querySelectorAll('#fileList .file-container h3').forEach((h3, index) => {
+                addNavItem(h3.textContent, `file-${index}`);
+                h3.id = `file-${index}`;
+            });
+        }
+        */
+
+///
+        function updateNavigation() {
+            const navList = document.getElementById('navList');
+            navList.innerHTML = '';
+            
+            const addNavItem = (title, id, isSectionHeading = false) => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = `#${id}`;
+                a.textContent = title;
+                if (isSectionHeading) {
+                    a.classList.add('section-heading');
+                }
+                li.appendChild(a);
+                navList.appendChild(li);
+            };
+
+            addNavItem(document.getElementById('videoTitle').textContent, 'videoSection', true);
+            document.querySelectorAll('#videoList .video-container h3').forEach((h3, index) => {
+                addNavItem(h3.textContent, `video-${index}`);
+                h3.id = `video-${index}`;
+            });
+
+            addNavItem(document.getElementById('fileTitle').textContent, 'fileSection', true);
+            document.querySelectorAll('#fileList .file-container h3').forEach((h3, index) => {
+                addNavItem(h3.textContent, `file-${index}`);
+                h3.id = `file-${index}`;
+            });
+
+            // Füge am Ende der Navigation unsichtbaren Abstand hinzu
+            const emptySpace = document.createElement('li');
+            emptySpace.className = 'invisible-space';
+            navList.appendChild(emptySpace);
+        }
+
+///
+
+        // Initial update of navigation
+        updateNavigation();
+
+        // Event listeners for title changes
+        document.getElementById('videoTitle').addEventListener('input', updateNavigation);
+        document.getElementById('fileTitle').addEventListener('input', updateNavigation);
+
+        // Mutation observer to watch for changes in video and file lists
+        const observer = new MutationObserver(updateNavigation);
+        observer.observe(document.getElementById('videoList'), { childList: true, subtree: true, characterData: true });
+        observer.observe(document.getElementById('fileList'), { childList: true, subtree: true, characterData: true });
+    </script>
+
+
+</body></html>
